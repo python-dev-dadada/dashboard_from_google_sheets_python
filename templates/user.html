@@ -1,0 +1,142 @@
+{% extends "main.html" %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/app-assets/css/jquery.multiselect.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="content-body">
+    <!-- Data list view starts -->
+    <section id="data-thumb-view" class="data-thumb-view-header">
+        <div class="action-btns d-none">
+            <div class="btn-dropdown mr-1 mb-1"></div>
+        </div>
+        <!-- dataTable starts -->
+        <div class="table-responsive">
+            <table class="table data-thumb-view">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                        <th>Email</th>
+                        <th>Senha</th>
+                        <th>Foto</th>
+                        <th>Empresas</th>
+                        <th>aprovar</th>
+                        <th>Açao</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for user in users %} 
+                        <tr>
+                            <td></td>
+                            <input type="hidden" name="user_id" value="{{user.id}}">
+                            <input type="hidden" name="update_type">
+                            <td class="product-name" name="user_name">{{user.name}}</td>
+                            <td class="product-name" name="lastname">{{user.lastname}}</td>
+                            <td class="product-category" name="email">{{user.email}}</td>                            
+                            <td class="product-category" name="password">{{user.password}}</td>
+                            <td class="product-img" name="photo"><img src="/static/app-assets/images/user_photo/{{user.photo}}" alt="Img placeholder"></td>
+                            <td class="product-category" name="companies">{{user.companies}}</td>
+                            <td class="product-category" name="approve">{{user.approve}}</td>
+                            <td class="product-action">
+                                <span class="action-edit"><i class="feather icon-edit"></i></span>
+                                <!-- <span class="action-delete"><i class="feather icon-trash"></i></span> -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- dataTable ends -->
+
+        <!-- add new sidebar starts -->
+        <div class="add-new-data-sidebar">
+            <div class="overlay-bg"></div>
+            <div class="add-new-data">
+                <div class="div mt-2 px-2 d-flex new-data-title justify-content-between">
+                    <div>
+                        <h4 class="text-uppercase">Add User Data</h4>
+                    </div>
+                    <div class="hide-data-sidebar">
+                        <i class="feather icon-x"></i>
+                    </div>
+                </div>
+                <form action="" method="post" class="form" role="form" enctype="multipart/form-data">
+                    <input type="hidden" name="cur_user" id="cur_user">
+                    <div class="data-items pb-3">
+                        <div class="data-fields px-2 mt-3">
+                            <div class="row">                            
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="user_name">Nome</label>
+                                    <input type="text" class="form-control" name="user_name" id="user_name">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="lastname">Sobrenome</label>
+                                    <input type="text" class="form-control" name="lastname" id="lastname">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="email">email</label>
+                                    <input type="text" class="form-control" name="email" id="email">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="password">Senha</label>
+                                    <input type="text" class="form-control" name="password" id="password">
+                                </div>
+                                <div class="col-sm-12 data-field-col" id="approve_field">
+                                    <!-- <label for="approve">aprovar</label> -->
+                                    <input type="checkbox" name="approve" id="approve">  aprovar
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="company">Empresas</label>
+                                    <select class="form-control" name="company" id="company" multiple>
+                                        {% for company in companies %}
+                                            <option value="{{company.comp_name}}">{{company.comp_name}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-12 data-field-col data-list-upload">
+                                    <label for="photo">Foto</label>
+                                    <input type="file" class="form-control" name="photo" id="photo"> 
+                                    <!-- <form action="#" class="dropzone dropzone-area" id="dataListUpload">
+                                        <div class="dz-message">Upload Image</div>
+                                    </form> -->
+                                    <!-- <div action="#" class="dropzone dropzone-area" name="photo">
+                                        <div class="dz-message">Upload Image</div>
+                                    </div> -->
+                                </div>
+                            
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-data-footer d-flex justify-content-around px-1 mt-2">
+                        <div class="btn">
+                            <button type="submit" class="btn btn-primary" id="btn_add_data">Add Data</button>
+                        </div>
+                        <div class="btn">
+                            <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                        </div>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- add new sidebar ends -->
+    </section>
+    <!-- Data list view end -->
+
+</div>
+{% endblock %}
+
+{% block js %}
+
+<!-- BEGIN: Page JS-->
+<script src="/static/app-assets/js/user-list-view.js"></script>
+<script src="/static/app-assets/js/jquery.multiselect.js"></script>
+<!-- END: Page JS-->
+{% endblock %}
+

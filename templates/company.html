@@ -1,0 +1,126 @@
+{% extends "main.html" %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content-body">
+    <!-- Data list view starts -->
+    <section id="data-thumb-view" class="data-thumb-view-header">
+        <div class="action-btns d-none">
+            <div class="btn-dropdown mr-1 mb-1"></div>
+        </div>
+        <!-- dataTable starts -->
+        <div class="table-responsive">
+            <table class="table data-thumb-view">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nome da Empresa</th>
+                        <th>CNPJ</th>
+                        <th>email responsável</th>
+                        <th>Logo da Empresa</th>
+                        <th>Alíquota Padrão de Imposto Sobre Vendas</th>
+                        <th>Alíquota Melhorada Imposto Sobre Vendas</th>
+                        <th>Açao</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comp in comps %} 
+                        <tr>
+                            <td></td>
+                            <td class="product-name" name="comp_name">{{comp.comp_name}}</td>
+                            <td class="product-name" name="cnpj">{{comp.cnpj}}</td>
+                            <td class="product-category" name="email">{{comp.email}}</td>
+                            <td class="product-img" name="logo"><img src="/static/app-assets/images/company_logo/{{comp.logo}}" alt="Img placeholder"></td>
+                            <td class="product-category" name="standard_rate">{{comp.standard_rate}}</td>
+                            <td class="product-category" name="improved_rate">{{comp.improved_rate}}</td>
+                            <td class="product-action">
+                                <span class="action-edit"><i class="feather icon-edit"></i></span>
+                                <span class="action-delete"><i class="feather icon-trash"></i></span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- dataTable ends -->
+
+        <!-- add new sidebar starts -->
+        <div class="add-new-data-sidebar">
+            <div class="overlay-bg"></div>
+            <div class="add-new-data">
+                <div class="div mt-2 px-2 d-flex new-data-title justify-content-between">
+                    <div>
+                        <h4 class="text-uppercase">Adicionar / Atualizar Dados da Empresa</h4>
+                    </div>
+                    <div class="hide-data-sidebar">
+                        <i class="feather icon-x"></i>
+                    </div>
+                </div>
+                <form action="" method="post" class="form" role="form" enctype="multipart/form-data">
+                    <input type="hidden" name="cur_cnpj" id="cur_cnpj">
+                    <div class="data-items pb-3">
+                        <div class="data-fields px-2 mt-3">
+                            <div class="row">                            
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="comp_name">Nome da Empresa</label>
+                                    <input type="text" class="form-control" name="comp_name" id="comp_name">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="cnpj">CNPJ</label>
+                                    <input type="text" class="form-control" name="cnpj" id="cnpj">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="email">email responsável</label>
+                                    <input type="text" class="form-control" name="email" id="email">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="standard_rate">Alíquota Padrão de Imposto Sobre Vendas</label>
+                                    <input type="text" class="form-control" name="standard_rate" id="standard_rate">
+                                </div>
+                                <div class="col-sm-12 data-field-col">
+                                    <label for="improved_rate">Alíquota Melhorada Imposto Sobre Vendas</label>
+                                    <input type="text" class="form-control" name="improved_rate" id="improved_rate">
+                                </div>
+                                <div class="col-sm-12 data-field-col data-list-upload">
+                                    <label for="logo">Logo da Empresa</label>
+                                    <input type="file" class="form-control" name="logo" id="logo"> 
+                                    <!-- <form action="#" class="dropzone dropzone-area" id="dataListUpload">
+                                        <div class="dz-message">Upload Image</div>
+                                    </form> -->
+                                    <!-- <div action="#" class="dropzone dropzone-area" name="logo">
+                                        <div class="dz-message">Upload Image</div>
+                                    </div> -->
+                                </div>
+                            
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-data-footer d-flex justify-content-around px-1 mt-2">
+                        <div class="btn">
+                            <button type="submit" class="btn btn-primary" id="btn_add_data">Add Data</button>
+                        </div>
+                        <div class="btn">
+                            <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                        </div>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- add new sidebar ends -->
+    </section>
+    <!-- Data list view end -->
+
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- BEGIN: Page JS-->
+<script src="/static/app-assets/js/company-list-view.js"></script>
+<!-- END: Page JS-->
+{% endblock %}
+

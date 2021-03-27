@@ -1,0 +1,137 @@
+{% extends "main.html" %}
+
+{% block styles %}
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/extensions/dragula.min.css">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css" href="/static/app-assets/css/plugins/extensions/drag-and-drop.css">
+<!-- END: Page CSS-->
+<style>
+    .card {
+        padding: 20px;
+    }
+</style>
+
+<script>
+    
+    function save_dash(sheet_id, sheet_name, sheet_range, tbl_id, src, chart_title, dash_name, chart_type, id, el_self) {
+        if (chart_title == '') {
+            chart_title = 'untitled';  
+        } 
+
+        var $tbl_area = $(el_self).parent().parent().find(" > div[name='table_area']");
+
+        // get_sheet_data(sheet_id, sheet_name, sheet_range, chart_type, tbl_id, chart_title):
+        $.ajax({
+            // url: "/save_dash/" + sheet_id + "/" + sheet_name + "/" + sheet_range + "/" + tbl_id + "/" + src + "/" + chart_title + "/" + dash_name,
+            url: "/get_sheet_data/" + sheet_id + "/" + sheet_name + "/" + sheet_range + "/" + chart_type + "/" + tbl_id + "/" + chart_title,
+            type: "POST",
+            datatype: "text",        
+            success: function (result) { 
+                console.log(result);
+                var res = "";
+                res = result;
+                src = res.substring(27, res.indexOf(".html")) + ".html";
+                // var $tbl_area = $(t).parent().parent().parent().find(" > div[name='table_area']");
+                $tbl_area.html(result);
+
+                $.ajax({
+                    url: "/del_chart/" + id,
+                    type: "POST",
+                    datatype: "text",        
+                    success: function (result) { 
+                        console.log(result)
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }       
+                });
+
+                $.ajax({
+                    url: "/save_dash/" + sheet_id + "/" + sheet_name + "/" + sheet_range + "/" + tbl_id + "/" + src + "/" + chart_title + "/" + dash_name + "/" + chart_type,
+                    // url: "/get_sheet_data/" + sheet_id + "/" + sheet_name + "/" + sheet_range + "/" + chart_type + "/" + tbl_id + "/" + chart_title,
+                    type: "POST",
+                    datatype: "text",        
+                    success: function (result) { 
+                        alert("A chart is saved successfully.");
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert("Saving chart is failed.");
+                    }       
+                });
+            },
+            error: function (error) {
+                console.log(error)
+            }       
+        });
+
+    }
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content-body">    
+    <div class="content-body">
+        <!-- Draggable cards section start -->
+        
+                    <!-- <div class="card overflow-hidden"> -->
+                        <div class="card-content">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    {% for dd in dash %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" name="tab_names" id="content_{{dd.name}}_tab" data-toggle="tab" href="#content_{{dd.name}}" aria-controls="content_{{dd.name}}" role="tab">{{dd.name}}</a>
+                                        </li>
+                                    {% endfor%}
+                                </ul>
+                                <div class="tab-content">
+                                    {% for dd in dash %}
+                                        <div class="tab-pane" id="content_{{dd.name}}" aria-labelledby="content_{{dd.name}}_tab" role="tabpanel">
+                                            <section id="draggable-cards">
+                                                <div class="row" id="card-drag-area">
+                                                    {% for cc in dd.content %}
+                                                        <div class="col-xl-6 col-md-12 col-sm-12">
+                                                            <div class="card">                                                            
+                                                                <div class="row col-md-12 mt-2" name="table_area" style="margin: auto; overflow-x:auto;">{{cc.content}}</div>                        
+                                                                <div class="offset-md-8 col-md-4">
+                                                                    <button type="button" class="btn btn-primary form-control" name="chart_refresh" id="chart_refresh" onclick="save_dash('{{cc.spread_id}}', '{{cc.sheet_name}}', '{{cc.range}}', '{{cc.table_id}}', '{{cc.src}}', '{{cc.title}}', '{{cc.name}}', '{{cc.chart_type}}', '{{cc.id}}', this);">refresh</button>
+                                                                    <!-- '{{cc.spread_id}}', '{{cc.sheet_name}}', '{{cc.range}}', '{{cc.table_id}}', '{{cc.src}}', '{{cc.title}}', '{{cc.name}}' -->
+                                                                    <!-- url: "/save_dash/" + sheet_id + "/" + sheet_name + "/" + sheet_range + "/" + tbl_id + "/" + src + "/" + chart_title + "/" + dash_name, -->
+                                                                </div>
+                                                            </div>                                                        
+                                                        </div>
+
+                                                        
+                                                    {% endfor %}
+                                                </div>
+                                            </section>
+                                            
+
+                                        </div>
+                                    {% endfor%}
+                                </div>
+                            </div>
+                        </div>    
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="/static/app-assets/vendors/js/extensions/dragula.min.js"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="/static/app-assets/js/scripts/extensions/drag-drop.js"></script>
+<script src="/static/app-assets/js/dashboard.js"></script>
+<!-- END: Page JS-->
+{% endblock %}
+
